@@ -1,0 +1,33 @@
+//Design Code
+module demux1x2(output out1,out2,input sel,in);
+  assign out1=in&(~sel);
+  assign out2=in&sel;
+endmodule
+
+//Test Bench Code
+module tb();
+  wire out1,out2;
+  reg sel,in;
+  demux1x2 DUT(out1,out2,sel,in);
+  integer i;
+  initial
+    begin
+      for(i=0;i<4;i=i+1)
+        begin
+          {in,sel}=i;
+          #10;
+        end
+    end
+  
+  initial
+    begin
+      $timeformat(-9,0,"ns",10);
+      $monitor("time=%0t,in=%b,sel=%b,out1=%b,out2=%b",$time,in,sel,out1,out2);
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+endmodule
+
